@@ -4,8 +4,6 @@ import { connectDB } from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
 import taskRoutes from './routes/taskRoutes.js'
 
-
-
 dotenv.config();
 
 const app = express();
