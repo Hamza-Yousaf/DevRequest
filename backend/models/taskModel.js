@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import User from '../models/userModel.js'
 
 const taskSchema = new mongoose.Schema({
     title: {
@@ -23,8 +22,7 @@ const taskSchema = new mongoose.Schema({
         required: true
     },
     author: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: User,
+        type: String,
         required: true
     },
 }, {
