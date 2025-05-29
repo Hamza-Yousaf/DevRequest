@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 export const createUser = async (req, res) => {
     const user = req.body;
 
-    if(!user.name || !user.role || !user.position || !user.email) {
+    if(!user.name || !user.role || !user.position || !user.email || !user.password) {
         return res.status(400).json({ success: false, message: "Please provide all fields"});
     }
 

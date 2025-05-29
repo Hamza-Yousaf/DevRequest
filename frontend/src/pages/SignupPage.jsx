@@ -5,7 +5,8 @@ const LoginPage = () => {
     name: "",
     role: "",
     position: "",
-    email: ""
+    email: "",
+    password: ""
   });
 
   const handleAddUser = async () => {
@@ -49,6 +50,10 @@ const LoginPage = () => {
                     <input type="text" placeholder='Email' className='relative w-full mt-4 p-2 bg-white rounded-sm border-2 border-gray-300 focus:border-orange-200 focus:border-2 focus:outline-none'
                     value={newUser.email}
                     onChange={(e) => setNewUser({ ...newUser, email: e.target.value})}/>
+
+                    <input type="text" placeholder='Password' className='relative w-full mt-4 p-2 bg-white rounded-sm border-2 border-gray-300 focus:border-orange-200 focus:border-2 focus:outline-none'
+                    value={newUser.password}
+                    onChange={(e) => setNewUser({ ...newUser, password: e.target.value})}/>
                 </div>
 
                 <button className='bg-gray-900 w-full h-auto p-2 rounded-sm text-white cursor-pointer'
