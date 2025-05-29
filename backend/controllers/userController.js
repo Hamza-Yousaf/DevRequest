@@ -60,3 +60,24 @@ export const updateUser = async (req, res) => {
         res.status(500).json({ success: false, message: "server error"});
     }
 }
+
+export const verifyUser = async (req, res) => {
+  const { name, password } = req.body;
+
+  try {
+    const user = await User.findOne({ name });
+
+    if (!user) {
+      return res.json({ success: false, message: "User does not exist" });
+    }
+
+    if (user.password === password) {
+      return res.json({ success: true, message: "Login successful", user });
+    } else {
+      return res.json({ success: false, message: "Incorrect password" });
+    }
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};

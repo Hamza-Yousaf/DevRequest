@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const LoginPage = () => {
+const SignupPage = () => {
   const [newUser, setNewUser] = useState({
     name: "",
     role: "",
@@ -10,7 +10,7 @@ const LoginPage = () => {
   });
 
   const handleAddUser = async () => {
-    if(!newUser.name || !newUser.role || !newUser.position || !newUser.email) {
+    if(!newUser.name || !newUser.role || !newUser.position || !newUser.email || !newUser.password) {
       console.log("please proivde all fields");
       return {success: false, message: "Please provide all fields"}
     }
@@ -51,7 +51,7 @@ const LoginPage = () => {
                     value={newUser.email}
                     onChange={(e) => setNewUser({ ...newUser, email: e.target.value})}/>
 
-                    <input type="text" placeholder='Password' className='relative w-full mt-4 p-2 bg-white rounded-sm border-2 border-gray-300 focus:border-orange-200 focus:border-2 focus:outline-none'
+                    <input type="password" placeholder='Password' className='relative w-full mt-4 p-2 bg-white rounded-sm border-2 border-gray-300 focus:border-orange-200 focus:border-2 focus:outline-none'
                     value={newUser.password}
                     onChange={(e) => setNewUser({ ...newUser, password: e.target.value})}/>
                 </div>
@@ -66,4 +66,4 @@ const LoginPage = () => {
   )
 }
 
-export default LoginPage
+export default SignupPage
