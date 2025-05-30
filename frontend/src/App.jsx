@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import SignupPage from './pages/SignupPage'
 import DashboardPage from './pages/DashboardPage'
-import LoginPage from './pages/loginPage'
+import LoginPage from './pages/LoginPage'
 
 const App = () => {
   return (

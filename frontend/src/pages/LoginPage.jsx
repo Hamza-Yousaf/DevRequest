@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const loginPage = () => {
   const [details, setDetails] = useState({
     name: "",
     password: ""
   });
+
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     if(!details.name || !details.password) {
@@ -24,6 +27,10 @@ const loginPage = () => {
 
     console.log(data.message);
 
+    if(data.success) {
+      navigate("/dashboard");
+    }
+
   }
 
   return (
@@ -37,7 +44,7 @@ const loginPage = () => {
                     value={details.name}
                     onChange={(e) => setDetails(prev => ({ ...prev, name: e.target.value }))}/>
 
-                    <input type="text" placeholder='Password' className='relative w-full mt-4 p-2 bg-white rounded-sm border-2 border-gray-300 focus:border-orange-200 focus:border-2 focus:outline-none'
+                    <input type="password" placeholder='Password' className='relative w-full mt-4 p-2 bg-white rounded-sm border-2 border-gray-300 focus:border-orange-200 focus:border-2 focus:outline-none'
                     value={details.password}
                     onChange={(e) => setDetails(prev => ({ ...prev, password: e.target.value }))}/>
                 </div>
