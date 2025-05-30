@@ -1,6 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const DashboardPage = () => {
+  const [selectedSort, setSelectedSort] = useState();
+  const [selectedRoles, setSelectedRoles] = useState([]);
+  const [selectedPositions, setSelectedPositions] = useState([]);
+  const [selectedStatuss, setSelectedStatuss] = useState([]);
+
+  const toggleSelection = (value, selectedArray, setSelectedArray) => {
+    if(selectedArray.includes(value)) {
+      setSelectedArray(selectedArray.filter(item => item !== value));
+    } else {
+      setSelectedArray([...selectedArray, value]);
+    }
+  }
+
+  const displaySelected = (text, onClick, isSelected) => {
+    return (
+      <button
+      key={text}
+      onClick={onClick}
+      className={`cursor-pointer w-full px-3 py-2 text-sm text-left 
+        ${isSelected ? 'bg-emerald-200 font-semibold' : 'bg-gray-50 hover:bg-gray-100'} text-emerald-900`}
+      >
+      {text}
+      </button>
+    )
+
+  }
+
   return (
     // <div>DashboardPage</div>
 
@@ -26,30 +53,25 @@ const DashboardPage = () => {
           <h4 className='text-sm mb-2 text-emerald-800'>Sort by</h4>
 
           <div className="bg-white w-40 h-75 shadow-sm self-center h-auto">
-            <button className='bg-gray-50 cursor-pointer w-full text-black px-3 py-2 text-sm hover:bg-gray-100 focus:bg-gray-200 text-center'>ALL</button>
+            
+            {['ALL', 'Newest', 'Deadline', 'Priority'].map(option =>
+              displaySelected(option, () => toggleSelection(option, selectedRoles, setSelectedRoles), selectedRoles.includes(option))
+            )}
 
-            <button className='bg-gray-50 cursor-pointer w-full text-black px-3 py-2 text-sm hover:bg-gray-100 focus:bg-gray-200 text-center'>Newest</button>
-
-            <button className='bg-gray-50 cursor-pointer w-full text-black px-3 py-2 text-sm hover:bg-gray-100 focus:bg-gray-200 text-center'>Deadline</button>
-
-            <button className='bg-gray-50 cursor-pointer w-full text-black px-3 py-2 text-sm hover:bg-gray-100 focus:bg-gray-200 text-center'>Priority</button>
-                
             <h4 className='pl-3 pt-2 font-weight mt-4'>Role</h4>
-            <button className='bg-gray-50 cursor-pointer w-full text-left text-emerald-900 px-3 py-2 text-sm hover:bg-gray-100 focus:bg-gray-200'>Frontend</button>
-            <button className='bg-gray-50 cursor-pointer w-full text-left text-emerald-900 px-3 py-2 text-sm hover:bg-gray-100 focus:bg-gray-200'>Backend</button>
-            <button className='bg-gray-50 cursor-pointer w-full text-left text-emerald-900 px-3 py-2 text-sm hover:bg-gray-100 focus:bg-gray-200'>Fullstack</button>
+            {['Frontend', 'Backend', 'Fullstack'].map(role =>
+              displaySelected(role, () => toggleSelection(role, selectedRoles, setSelectedRoles), selectedRoles.includes(role))
+            )}
 
             <h4 className='pl-3 pt-2 underline mt-4'>Position</h4>
-            <button className=' bg-gray-50 cursor-pointer w-full text-left text-emerald-900 px-3 py-2 text-sm hover:bg-gray-100 focus:bg-gray-200'>Intern</button>
-            <button className='bg-gray-50 cursor-pointer w-full text-left text-emerald-900 px-3 py-2 text-sm hover:bg-gray-100 focus:bg-gray-200'>Junior</button>
-            <button className='bg-gray-50 cursor-pointer w-full text-left text-emerald-900 px-3 py-2 text-sm hover:bg-gray-100 focus:bg-gray-200'>Senior</button>
-            <button className='bg-gray-50 cursor-pointer w-full text-left text-emerald-900 px-3 py-2 text-sm hover:bg-gray-100 focus:bg-gray-200'>Lead</button>
+            {['Intern', 'Junior', 'Senior', 'Lead'].map(pos =>
+              displaySelected(pos, () => toggleSelection(pos, selectedPositions, setSelectedPositions), selectedPositions.includes(pos))
+            )}
 
             <h4 className='pl-3 pt-2 underline mt-4'>Status</h4>
-            <button className=' bg-gray-50 cursor-pointer w-full text-left text-emerald-900 px-3 py-2 text-sm hover:bg-gray-100 focus:bg-gray-200'>Open</button>
-            <button className='bg-gray-50 cursor-pointer w-full text-left text-emerald-900 px-3 py-2 text-sm hover:bg-gray-100 focus:bg-gray-200'>Claimed</button>
-            <button className='bg-gray-50 cursor-pointer w-full text-left text-emerald-900 px-3 py-2 text-sm hover:bg-gray-100 focus:bg-gray-200'>Completed</button>
-            <button className='bg-gray-50 cursor-pointer w-full text-left text-emerald-900 px-3 py-2 text-sm hover:bg-gray-100 focus:bg-gray-200'>Abandoned</button>
+            {['Open', 'Claimed', 'Completed', 'Abandoned'].map(status =>
+              displaySelected(status, () => toggleSelection(status, selectedStatuss, setSelectedStatuss), selectedStatuss.includes(status))
+            )}
 
           </div>
 
