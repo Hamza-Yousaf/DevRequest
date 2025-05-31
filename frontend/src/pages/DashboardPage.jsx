@@ -15,10 +15,8 @@ const DashboardPage = () => {
           const res = await fetch("http://localhost:5000/api/tasks");
           const data = await res.json();
           setTasks(data.data);
-          setLoading(false);
       } catch (error) {
           console.error("error in fetching tasks", error);
-          setLoading(false);
       }
     }
 
