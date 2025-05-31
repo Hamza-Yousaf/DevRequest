@@ -1,10 +1,29 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import Task from '../components/Task.jsx';
 
 const DashboardPage = () => {
   const [selectedSort, setSelectedSort] = useState();
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [selectedPositions, setSelectedPositions] = useState([]);
   const [selectedStatuss, setSelectedStatuss] = useState([]);
+
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+          const res = await fetch("http://localhost:5000/api/tasks");
+          const data = await res.json();
+          setTasks(data.data);
+          setLoading(false);
+      } catch (error) {
+          console.error("error in fetching tasks", error);
+          setLoading(false);
+      }
+    }
+
+    fetchTasks();
+  }, []);
 
   const toggleSelection = (value, selectedArray, setSelectedArray) => {
     if(selectedArray.includes(value)) {
@@ -19,8 +38,8 @@ const DashboardPage = () => {
       <button
       key={text}
       onClick={onClick}
-      className={`cursor-pointer w-full px-3 py-2 text-sm text-left 
-        ${isSelected ? 'bg-emerald-200 font-semibold' : 'bg-gray-50 hover:bg-gray-100'} text-emerald-900`}
+      className={`cursor-pointer w-full px-3 py-2 text-sm text-left text-emerald-900
+        ${isSelected ? 'bg-emerald-200 font-semibold' : 'bg-gray-50 hover:bg-gray-100'}`}
       >
       {text}
       </button>
@@ -45,7 +64,7 @@ const DashboardPage = () => {
         </svg>
       </nav>
 
-      <div className="flex flex-col p-4 absolute h-[calc(100vh-2.5rem)] w-50 bg-gray-100 z-0 top-10 overflow-y-auto">
+      <div className="flex flex-col p-4 absolute h-[calc(100vh-2.5rem)] w-50 bg-gray-100 z-0 top-10 overflow-y-auto border">
         <h4 className='mt-5 text-md mb-5 '>Overview</h4>
 
         <div className="">
@@ -74,9 +93,15 @@ const DashboardPage = () => {
             )}
 
           </div>
-
         </div>
       </div>
+
+      <div className="ml-49 pt-15 grid grid-cols-4 gap-1">
+        {Array.isArray(tasks) && tasks.map(task => (
+          <Task key={task._id} task={task} />
+        ))}
+      </div>
+
     </div>
 
   )
