@@ -30,12 +30,10 @@ const DashboardPage = () => {
           params.append("general", selectedGeneral[0]);
         }
 
-        console.log(selectedPositions)
-
-
+        console.log(`http://localhost:5000/api/tasks?${params.toString()}`)
         const res = await fetch(`http://localhost:5000/api/tasks?${params.toString()}`);
         const data = await res.json();
-        console.log(`http://localhost:5000/api/tasks?${params.toString()}`)
+        console.log(data)
         setTasks(data.data);
       } catch (error) {
           console.error("error in fetching tasks", error);
@@ -43,7 +41,7 @@ const DashboardPage = () => {
     }
 
     fetchTasks();
-  }, [selectedRoles, selectedPositions, selectedStatuss]);
+  }, [selectedRoles, selectedPositions, selectedStatuss, selectedGeneral]);
 
   const toggleSelection = (value, selectedArray, setSelectedArray) => {
     if(selectedArray.includes(value)) {
@@ -93,7 +91,7 @@ const DashboardPage = () => {
 
           <div className="bg-white w-40 h-75 shadow-sm self-center h-auto">
             
-            {['ALL', 'Newest', 'Deadline', 'Priority'].map(general =>
+            {['Newest', 'Deadline', 'Priority'].map(general =>
               displaySelected(general, () => toggleSelection(general, selectedGeneral, setSelectedGeneral), selectedGeneral.includes(general))
             )}
 

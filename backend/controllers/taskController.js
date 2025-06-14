@@ -37,6 +37,28 @@ export const getTasks = async(req, res) => {
             filter.status = new RegExp(`^${status}$`, 'i');
         }
 
+        if (general) {
+            if(general === "Newest") {
+                const tasks = await Task.find().sort({createdAt : -1})
+                res.status(201).json({ success: true, data: tasks});
+            } else if (general == "Deadline") {
+                const tasks = await Task.find();
+                tasks.sort((a, b) => new Date(b.deadline) - new Date(a.deadline));
+                res.status(201).json({ success: true, data: tasks});
+            } else if (general == "Priority") {
+                const sorter = {};
+                sorter["High"] = 3;
+                sorter["Medium"] = 2;
+                sorter["Low"] = 1;
+
+                const tasks = await Task.find();
+                tasks.sort((a, b) => sorter[b.priority] - sorter[a.priority]);
+                res.status(201).json({ success: true, data: tasks});
+            } else if (general == "ALL") {
+                
+            }
+        }
+
         const tasks = await Task.find(filter);
         res.status(201).json({ success: true, data: tasks});
     } catch (error) {
