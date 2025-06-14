@@ -21,7 +21,7 @@ export const createTask = async (req, res) => {
 
 export const getTasks = async(req, res) => {
     try {
-        const { roles, positions, status } = req.query;
+        const { roles, positions, status, general } = req.query;
 
         const filter = {};
 

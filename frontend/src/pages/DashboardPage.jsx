@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Task from '../components/Task.jsx';
 
 const DashboardPage = () => {
+  const [selectedGeneral, setSelectedGeneral] = useState([]);
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [selectedPositions, setSelectedPositions] = useState([]);
   const [selectedStatuss, setSelectedStatuss] = useState([]);
@@ -23,6 +24,10 @@ const DashboardPage = () => {
 
         if(selectedStatuss.length > 0) {
           params.append("status", selectedStatuss[0]);
+        }
+
+        if(selectedGeneral.length > 0) {
+          params.append("general", selectedGeneral[0]);
         }
 
         console.log(selectedPositions)
@@ -88,8 +93,8 @@ const DashboardPage = () => {
 
           <div className="bg-white w-40 h-75 shadow-sm self-center h-auto">
             
-            {['ALL', 'Newest', 'Deadline', 'Priority'].map(option =>
-              displaySelected(option, () => toggleSelection(option, selectedRoles, setSelectedRoles), selectedRoles.includes(option))
+            {['ALL', 'Newest', 'Deadline', 'Priority'].map(general =>
+              displaySelected(general, () => toggleSelection(general, selectedGeneral, setSelectedGeneral), selectedGeneral.includes(general))
             )}
 
             <h4 className='pl-3 pt-2 font-weight mt-4'>Role</h4>
