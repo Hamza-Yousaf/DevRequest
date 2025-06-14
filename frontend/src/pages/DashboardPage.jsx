@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Task from '../components/Task.jsx';
 
 const DashboardPage = () => {
-  const [selectedSort, setSelectedSort] = useState();
   const [selectedRoles, setSelectedRoles] = useState([]);
   const [selectedPositions, setSelectedPositions] = useState([]);
   const [selectedStatuss, setSelectedStatuss] = useState([]);
@@ -12,16 +11,34 @@ const DashboardPage = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-          const res = await fetch("http://localhost:5000/api/tasks");
-          const data = await res.json();
-          setTasks(data.data);
+        const params = new URLSearchParams();
+
+        if(selectedRoles.length > 0) {
+          params.append("roles", selectedRoles[0]);
+        }
+
+        if(selectedPositions.length > 0) {
+          params.append("positions", selectedPositions[0]);
+        }
+
+        if(selectedStatuss.length > 0) {
+          params.append("status", selectedStatuss[0]);
+        }
+
+        console.log(selectedPositions)
+
+
+        const res = await fetch(`http://localhost:5000/api/tasks?${params.toString()}`);
+        const data = await res.json();
+        console.log(`http://localhost:5000/api/tasks?${params.toString()}`)
+        setTasks(data.data);
       } catch (error) {
           console.error("error in fetching tasks", error);
       }
     }
 
     fetchTasks();
-  }, []);
+  }, [selectedRoles, selectedPositions, selectedStatuss]);
 
   const toggleSelection = (value, selectedArray, setSelectedArray) => {
     if(selectedArray.includes(value)) {

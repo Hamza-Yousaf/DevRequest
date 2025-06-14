@@ -21,7 +21,23 @@ export const createTask = async (req, res) => {
 
 export const getTasks = async(req, res) => {
     try {
-        const tasks = await Task.find({});
+        const { roles, positions, status } = req.query;
+
+        const filter = {};
+
+        if (roles) {
+            filter.roles = { $elemMatch: { $regex: new RegExp(`^${roles}$`, 'i') } };
+        }
+
+        if (positions) {
+            filter.positions = { $elemMatch: { $regex: new RegExp(`^${positions}$`, 'i') } };
+        }
+
+        if (status) {
+            filter.status = new RegExp(`^${status}$`, 'i');
+        }
+
+        const tasks = await Task.find(filter);
         res.status(201).json({ success: true, data: tasks});
     } catch (error) {
         console.log("error in fetching tasks", error.message);
