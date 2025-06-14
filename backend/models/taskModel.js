@@ -28,6 +28,9 @@ const taskSchema = new mongoose.Schema({
     positions: {
         type: [String]
     },
+    status: {
+        type: String,
+    },
 }, {
     timestamps: true
 });
