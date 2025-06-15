@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react'
 import Task from '../components/Task.jsx';
 
 const DashboardPage = () => {
-  const [selectedGeneral, setSelectedGeneral] = useState([]);
-  const [selectedRoles, setSelectedRoles] = useState([]);
-  const [selectedPositions, setSelectedPositions] = useState([]);
-  const [selectedStatuss, setSelectedStatuss] = useState([]);
+  const [selectedGeneral, setSelectedGeneral] = useState(null);
+  const [selectedRoles, setSelectedRoles] = useState(null);
+  const [selectedPositions, setSelectedPositions] = useState(null);
+  const [selectedStatuss, setSelectedStatuss] = useState(null);
 
   const [tasks, setTasks] = useState([]);
 
@@ -14,26 +14,24 @@ const DashboardPage = () => {
       try {
         const params = new URLSearchParams();
 
-        if(selectedRoles.length > 0) {
-          params.append("roles", selectedRoles[0]);
+        if(selectedRoles) {
+          params.append("roles", selectedRoles);
         }
 
-        if(selectedPositions.length > 0) {
-          params.append("positions", selectedPositions[0]);
+        if(selectedPositions) {
+          params.append("positions", selectedPositions);
         }
 
-        if(selectedStatuss.length > 0) {
-          params.append("status", selectedStatuss[0]);
+        if(selectedStatuss) {
+          params.append("status", selectedStatuss);
         }
 
-        if(selectedGeneral.length > 0) {
-          params.append("general", selectedGeneral[0]);
+        if(selectedGeneral) {
+          params.append("general", selectedGeneral);
         }
 
-        console.log(`http://localhost:5000/api/tasks?${params.toString()}`)
         const res = await fetch(`http://localhost:5000/api/tasks?${params.toString()}`);
         const data = await res.json();
-        console.log(data)
         setTasks(data.data);
       } catch (error) {
           console.error("error in fetching tasks", error);
@@ -43,11 +41,11 @@ const DashboardPage = () => {
     fetchTasks();
   }, [selectedRoles, selectedPositions, selectedStatuss, selectedGeneral]);
 
-  const toggleSelection = (value, selectedArray, setSelectedArray) => {
-    if(selectedArray.includes(value)) {
-      setSelectedArray(selectedArray.filter(item => item !== value));
+  const toggleSelection = (value, selectedValue, setSelectedValue) => {
+    if(selectedValue == value) {
+      setSelectedValue(null) 
     } else {
-      setSelectedArray([...selectedArray, value]);
+      setSelectedValue(value);
     }
   }
 
@@ -92,22 +90,22 @@ const DashboardPage = () => {
           <div className="bg-white w-40 h-75 shadow-sm self-center h-auto">
             
             {['Newest', 'Deadline', 'Priority'].map(general =>
-              displaySelected(general, () => toggleSelection(general, selectedGeneral, setSelectedGeneral), selectedGeneral.includes(general))
+              displaySelected(general, () => toggleSelection(general, selectedGeneral, setSelectedGeneral), selectedGeneral === general)
             )}
 
             <h4 className='pl-3 pt-2 font-weight mt-4'>Role</h4>
             {['Frontend', 'Backend', 'Fullstack'].map(role =>
-              displaySelected(role, () => toggleSelection(role, selectedRoles, setSelectedRoles), selectedRoles.includes(role))
+              displaySelected(role, () => toggleSelection(role, selectedRoles, setSelectedRoles), selectedRoles === role)
             )}
 
             <h4 className='pl-3 pt-2 underline mt-4'>Position</h4>
             {['Intern', 'Junior', 'Senior', 'Lead'].map(pos =>
-              displaySelected(pos, () => toggleSelection(pos, selectedPositions, setSelectedPositions), selectedPositions.includes(pos))
+              displaySelected(pos, () => toggleSelection(pos, selectedPositions, setSelectedPositions), selectedPositions === pos)
             )}
 
             <h4 className='pl-3 pt-2 underline mt-4'>Status</h4>
             {['Open', 'Claimed', 'Completed', 'Abandoned'].map(status =>
-              displaySelected(status, () => toggleSelection(status, selectedStatuss, setSelectedStatuss), selectedStatuss.includes(status))
+              displaySelected(status, () => toggleSelection(status, selectedStatuss, setSelectedStatuss), selectedStatuss === status)
             )}
 
           </div>

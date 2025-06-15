@@ -19,53 +19,46 @@ export const createTask = async (req, res) => {
     }
 };
 
-export const getTasks = async(req, res) => {
-    try {
-        const { roles, positions, status, general } = req.query;
+export const getTasks = async (req, res) => {
+  try {
+    const { roles, positions, status, general } = req.query;
+    const filter = {};
 
-        const filter = {};
-
-        if (roles) {
-            filter.roles = { $elemMatch: { $regex: new RegExp(`^${roles}$`, 'i') } };
-        }
-
-        if (positions) {
-            filter.positions = { $elemMatch: { $regex: new RegExp(`^${positions}$`, 'i') } };
-        }
-
-        if (status) {
-            filter.status = new RegExp(`^${status}$`, 'i');
-        }
-
-        if (general) {
-            if(general === "Newest") {
-                const tasks = await Task.find().sort({createdAt : -1})
-                res.status(201).json({ success: true, data: tasks});
-            } else if (general == "Deadline") {
-                const tasks = await Task.find();
-                tasks.sort((a, b) => new Date(b.deadline) - new Date(a.deadline));
-                res.status(201).json({ success: true, data: tasks});
-            } else if (general == "Priority") {
-                const sorter = {};
-                sorter["High"] = 3;
-                sorter["Medium"] = 2;
-                sorter["Low"] = 1;
-
-                const tasks = await Task.find();
-                tasks.sort((a, b) => sorter[b.priority] - sorter[a.priority]);
-                res.status(201).json({ success: true, data: tasks});
-            } else if (general == "ALL") {
-                
-            }
-        }
-
-        const tasks = await Task.find(filter);
-        res.status(201).json({ success: true, data: tasks});
-    } catch (error) {
-        console.log("error in fetching tasks", error.message);
-        res.status(500).json({sucess: false, message: "Server Error"});
+    if (roles) {
+      filter.roles = { $elemMatch: { $regex: new RegExp(`^${roles}$`, 'i') } };
     }
+
+    if (positions) {
+      filter.positions = { $elemMatch: { $regex: new RegExp(`^${positions}$`, 'i') } };
+    }
+
+    if (status) {
+      filter.status = new RegExp(`^${status}$`, 'i');
+    }
+
+    let tasks = await Task.find(filter);
+
+    if (general === "Newest") {
+        tasks = tasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    } else if (general === "Deadline") {
+        tasks = tasks.sort((a, b) => new Date(b.deadline) - new Date(a.deadline));
+    } else if (general === "Priority") {
+        const sorter = {
+            High: 3,
+            Medium: 2,
+            Low: 1
+        };
+      tasks = tasks.sort((a, b) => sorter[b.priority] - sorter[a.priority]);
+    }
+
+    return res.status(200).json({ success: true, data: tasks });
+
+  } catch (error) {
+    console.log("error in fetching tasks", error.message);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
 };
+
 
 export const deleteTask = async (req, res) => {
     const {id} = req.params;
